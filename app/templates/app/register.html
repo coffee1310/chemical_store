@@ -1,0 +1,78 @@
+	{% extends 'app/base.html' %}
+	{% load static %}
+
+{% block content %}
+<form method="post">
+	<div class="register-form">
+		{% csrf_token %}
+		<div class="form-field">
+			<div><img src="{% static 'app/images/user_name.png' %}"></div>
+		    {{ form.username }}
+  		</div>
+  
+  	<div class="form-field">
+  		<div><img src="{% static 'app/images/password.png' %}"></div>
+    	{{ form.password1 }}
+  	</div>
+  
+	  <div class="form-field">
+	  	<div><img src="{% static 'app/images/password.png' %}"></div>
+	    {{ form.password2 }}
+	  </div>
+  
+	  <div class="form-field">
+	  	<div><img src="{% static 'app/images/adress.png' %}"></div>
+	    {{ form.user_adress }}
+	  </div>
+  
+	  <div class="form-field">
+	  	<div><img src="{% static 'app/images/date.png' %}"></div>
+	    {{ form.user_birth_date }}
+	  </div>
+	</div>
+
+	<div class="register">
+		<button type="submit" class="register">Зарегистрироваться</button>
+	</div>
+</form>
+
+<script src="{% static 'app/calendar/airdatepicker/air-datepicker.js' %}"></script>
+<script>
+        new AirDatepicker('#birth-input', {
+            // isMobile: true,
+            // autoClose: false,
+            // position: 'right top',
+            // range: true,
+            // multipleDatesSeparator: ' - '
+            // timepicker: true,
+            // Handle render process
+            /*onRenderCell({date, cellType}) {
+                let dates = [1, 5, 7, 10, 15, 20, 25],
+                emoji = ['💕', '😃', '🍙', '🍣', '🍻', '🎉', '🥁'],
+                isDay = cellType === 'day',
+                _date = date.getDate(),
+                shouldChangeContent = isDay && dates.includes(_date),
+                randomEmoji = emoji[Math.floor(Math.random() * emoji.length)];
+
+                return {
+                    html: shouldChangeContent ? randomEmoji : false,
+                    classes: shouldChangeContent ? '-emoji-cell-' : false
+                }
+            }*/
+            buttons: ['today', 'clear'],
+            locale: {
+                days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                today: 'Today',
+                clear: 'Clear',
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: 'hh:mm aa',
+                firstDay: 0
+            }
+        });
+    </script>
+    <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>
+{% endblock %}

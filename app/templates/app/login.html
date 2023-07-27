@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<form method="post">
+	<div class="register-form">
+		{% csrf_token %}
+		<div class="form-field">
+			<div><img src="{% static 'app/images/user_name.png' %}"></div>
+		    {{ form.username }}
+  		</div>
+  
+	  	<div class="form-field">
+	  		<div><img src="{% static 'app/images/password.png' %}"></div>
+	    	{{ form.password }}
+	  	</div>
+	</div>
+
+	<div class="register">
+		<button type="submit" class="register">Войти</button>
+	</div>
+</form>
+{% endblock %}

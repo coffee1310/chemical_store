@@ -1,0 +1,45 @@
+{% load static %}
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/calendar/airdatepicker/air-datepicker.css' %}">
+	<title>{{title}}</title>
+</head>
+<header>
+	<nav class="menu-burger">
+	  <input type="checkbox" id="menu-toggle">
+	  <label for="menu-toggle" class="backside-menu-btn"><img src="{% static 'app/images/backside_menu.png' %}"></label>
+	  <ul>
+	    {% for c in categories %}
+	    <li><a href="{% url 'category_product' c.cat_slug %}">{{ c.cat }}</a></li>
+	    {% endfor %}
+	  </ul>
+	</nav>
+	<div class="bg-nav">
+	<nav class="menu-name">
+		<ul class="Logo-list">
+			<li><a href="{% url 'index_page' %}" style="color: black;">
+				<span style="color: #C0C0C0;">Re</span><sup class="upper-index">75</sup>
+				<span style="color: #EFBF00;">Ac</span><sup class="upper-index">89</sup>
+				T<span style="color: #800080;">I</span><sup class="upper-index">53</sup>
+				Ve M<span style="color:#3C3A3A">Ar</span><sup class="upper-index">18</sup>T</a>
+			</li>
+		</ul>
+	</nav>
+
+	<nav class="second-menu">
+		<ul>
+			<li>
+				{% block search %}
+				{% endblock %}
+			</li>
+			<li class="profile"><a href="{% url 'register_user' %}"><img src="{% static 'app/images/profile.png' %}"></a></li>
+			<li class="cart"><img src="{% static 'app/images/cart.png' %}"></li>
+		</ul>
+	</nav>
+</div>
+</header>
+<body>
+	{% block content %}
+	{% endblock %}
+</body>

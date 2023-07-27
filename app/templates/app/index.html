@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+{% for c in category %}
+
+<p class="category">{{c.cat}}</p>
+<div class="products">
+	{% if category %}
+		{% for p in products %}
+		{% if p.cat == c %}
+			<div class="product">
+				<p class="product-img"><img src="{{p.product_image.url}}"></p>
+				<span class="product-name">{{p.product_name}}</span>
+				<div class="stroke"></div>
+				<span class="product-price">{{p.product_price}}₽</span>
+				<div class="count">
+					<button onclick="reduceValue('counter{{p.pk}}')">-</button>
+					<span id="counter{{p.pk}}">1</span>
+					
+					<button onclick="increaseValue('counter{{p.pk}}')">+</button>
+				</div>
+				<button class="add-to-cart">Купить</button>
+			</div>
+		{% endif %}
+		{% endfor %}
+	{% endif %}
+
+</div>
+{% endfor %}
+<script src="{% static 'app/js/main.js' %}"></script>
+{% endblock %}
+
+
+{% block search %}
+<form method="POST">
+	<ul>
+		{% csrf_token %}
+		<li>{{ search_form.as_p }}</li>
+		<li class="search-btn"><button><img src="{% static 'app/images/search.png' %}"></button></li>
+	</ul>
+</form>
+{% endblock %}

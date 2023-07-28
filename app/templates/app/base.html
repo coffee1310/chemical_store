@@ -11,7 +11,7 @@
 	  <label for="menu-toggle" class="backside-menu-btn"><img src="{% static 'app/images/backside_menu.png' %}"></label>
 	  <ul>
 	    {% for c in categories %}
-	    <li><a href="{% url 'category_product' c.cat_slug %}">{{ c.cat }}</a></li>
+	    <li><a href="{{ c.get_absolute_url }}">{{ c.cat }}</a></li>
 	    {% endfor %}
 	  </ul>
 	</nav>
@@ -33,8 +33,14 @@
 				{% block search %}
 				{% endblock %}
 			</li>
-			<li class="profile"><a href="{% url 'register_user' %}"><img src="{% static 'app/images/profile.png' %}"></a></li>
-			<li class="cart"><img src="{% static 'app/images/cart.png' %}"></li>
+			{% if request.user.is_authenticated %}
+				<li class="profile"><a href="{% url 'login_user' %}"><img src="{% static 'app/images/profile.png' %}"></a></li>
+				<li class="cart"><img src="{% static 'app/images/cart.png' %}"></li>
+			{% else %}
+				<li class="profile"><a href="{% url 'login_user' %}"><img src="{% static 'app/images/profile.png' %}"></a></li>
+				<li class="cart"><a href="{% url 'login_user' %}"><img src="{% static 'app/images/cart.png' %}"></a></li>
+			{% endif %}
+
 		</ul>
 	</nav>
 </div>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.urls import reverse
 
 
 # Create your models here.
@@ -27,6 +28,9 @@ class Product(models.Model):
     product_physico_chemical_characteristics = models.TextField(verbose_name="Физико-химические свойства", blank=True)
     cat = models.ForeignKey('Category',on_delete=models.DO_NOTHING)
 
+    def get_absolute_url(self):
+        return reverse('product', kwargs={'product_slug': self.product_slug})
+
     def __str__(self):
         return self.product_name
 
@@ -37,6 +41,9 @@ class Product(models.Model):
 class Category(models.Model):
     cat = models.CharField(verbose_name="Категория", max_length=255,unique=True)
     cat_slug = models.SlugField(max_length=255, verbose_name="Category URL")
+
+    def get_absolute_url(self):
+        return reverse('category_product', kwargs={'cat_slug': self.cat_slug})
 
     def __str__(self):
         return self.cat

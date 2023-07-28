@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from .models import *
 class SearchForm(forms.Form):
-    query = forms.CharField(label = '',max_length=100, widget=forms.TextInput(attrs={"class":"search-input",'placeholder': ''}))
+    query = forms.CharField(label = '',max_length=100, widget=forms.TextInput(attrs={"class":"search-input",'placeholder': '',"name":"q"}))
 
 class UserRegisterForm(forms.Form):
     username = forms.CharField(label="Никнейм", max_length=150, widget=forms.TextInput(attrs={"class":"username_input"}))

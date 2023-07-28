@@ -5,6 +5,7 @@
 <form method="post">
 	<div class="register-form">
 		{% csrf_token %}
+		<div class="form-error">{{ form.non_field_errors }}</div>
 		<div class="form-field">
 			<div><img src="{% static 'app/images/user_name.png' %}"></div>
 		    {{ form.username }}
@@ -19,5 +20,6 @@
 	<div class="register">
 		<button type="submit" class="register">Войти</button>
 	</div>
+	<span class="no-acc"><a href="{% url 'register_user' %}">Нет аккаунта?</a></span>
 </form>
 {% endblock %}

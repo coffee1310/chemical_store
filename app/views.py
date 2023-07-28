@@ -1,10 +1,14 @@
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
+from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, FormView, CreateView, DetailView, ListView
-from .models import *
+from django.views.generic import TemplateView, FormView, ListView
+
 from .forms import SearchForm, UserRegisterForm, UserLoginForm
+from .models import *
+
+
 # Create your views here.
 
 class HomePage(TemplateView):
@@ -13,10 +17,11 @@ class HomePage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["products"] = Product.objects.all()
-        context["category"] = Category.objects.all()
-        context["categories"] = Category.objects.all()
+        context["category"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
+        context["categories"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
         context["search_form"] = SearchForm()
         context["title"] = "Reactive Mart"
+        context["method"] = "POST"
         return context
 
     def post(self, request, *args, **kwargs):
@@ -31,38 +36,35 @@ class HomePage(TemplateView):
             context["categories"] = Category.objects.all()
             context["search_form"] = form
             context["title"] = "Reactive Mart"
+            context["method"] = "POST"
             return self.render_to_response(context)
         return render(request, self.template_name, self.get_context_data(form=form))
 
-class CategoryProduct(TemplateView):
+class CategoryProduct(ListView):
     model = Product
+    context_object_name = "products"
     template_name = 'app/index.html'
+    def get_queryset(self):
+        cat_slug = self.kwargs['cat_slug']
+        print(Product.objects.filter(cat__cat_slug=cat_slug))
+        return Product.objects.filter(cat__cat_slug=cat_slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["products"] = Product.objects.all()
+        cat_slug = self.kwargs['cat_slug']
+        context['category'] = Category.objects.filter(cat_slug=cat_slug)
         context["categories"] = Category.objects.all()
         context["search_form"] = SearchForm()
-        context["title"] = "Reactive Mart"
+        context["method"] = "GET"
+        query = self.request.GET.get('query')
+        if query:
+            search_results = Product.objects.filter(product_name__icontains=query)
+            context['products'] = search_results
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            context = super().get_context_data(**kwargs)
-            query = form.cleaned_data['query']
-            results = Product.objects.filter(product_name__icontains=query)
 
-            context["products"] = results
-            context['category'] = set([r.cat for r in results])
-            context["categories"] = Category.objects.all()
-            context["search_form"] = form
-            context["title"] = "Reactive Mart"
-            return self.render_to_response(context)
-        return render(request, self.template_name, self.get_context_data(form=form))
 
-    def get_queryset(self):
-        return Category.objects.filter(cat_slug__exact=self.kwargs['cat_slug'])
+
 
 class RegisterUser(FormView):
     template_name = 'app/register.html'
@@ -100,11 +102,17 @@ class LoginUser(LoginView):
         return context
 
     def get_success_url(self):
-        print(1)
         return reverse_lazy("index_page")
 
+class UserProfile(TemplateView):
+    template_name = 'app/profile.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
 def logout_user(request):
-    pass
+    logout(request)
+    return redirect("index_page")
 
 def order_history(request):
     pass

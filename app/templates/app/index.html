@@ -6,7 +6,7 @@
 
 <p class="category">{{c.cat}}</p>
 <div class="products">
-	{% if category %}
+
 		{% for p in products %}
 		{% if p.cat == c %}
 			<div class="product">
@@ -24,7 +24,7 @@
 			</div>
 		{% endif %}
 		{% endfor %}
-	{% endif %}
+
 
 </div>
 {% endfor %}
@@ -33,7 +33,7 @@
 
 
 {% block search %}
-<form method="POST">
+<form method="{{method}}">
 	<ul>
 		{% csrf_token %}
 		<li>{{ search_form.as_p }}</li>

@@ -1,11 +1,13 @@
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView, ListView
 
-from .forms import SearchForm, UserRegisterForm, UserLoginForm
+from .forms import SearchForm, UserRegisterForm, UserLoginForm, UserProfileForm
 from .models import *
 
 
@@ -30,10 +32,9 @@ class HomePage(TemplateView):
             context = super().get_context_data(**kwargs)
             query = form.cleaned_data['query']
             results = Product.objects.filter(product_name__icontains=query)
-
             context["products"] = results
-            context['category'] = set([r.cat for r in results])
-            context["categories"] = Category.objects.all()
+            context["category"] = set([r.cat for r in results])
+            context["categories"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
             context["search_form"] = form
             context["title"] = "Reactive Mart"
             context["method"] = "POST"
@@ -43,28 +44,24 @@ class HomePage(TemplateView):
 class CategoryProduct(ListView):
     model = Product
     context_object_name = "products"
-    template_name = 'app/index.html'
+    template_name = "app/index.html"
     def get_queryset(self):
-        cat_slug = self.kwargs['cat_slug']
+        cat_slug = self.kwargs["cat_slug"]
         print(Product.objects.filter(cat__cat_slug=cat_slug))
         return Product.objects.filter(cat__cat_slug=cat_slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        cat_slug = self.kwargs['cat_slug']
-        context['category'] = Category.objects.filter(cat_slug=cat_slug)
-        context["categories"] = Category.objects.all()
+        cat_slug = self.kwargs["cat_slug"]
+        context["category"] = Category.objects.filter(cat_slug=cat_slug)
+        context["categories"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
         context["search_form"] = SearchForm()
         context["method"] = "GET"
         query = self.request.GET.get('query')
         if query:
             search_results = Product.objects.filter(product_name__icontains=query)
-            context['products'] = search_results
+            context["products"] = search_results
         return context
-
-
-
-
 
 class RegisterUser(FormView):
     template_name = 'app/register.html'
@@ -73,8 +70,8 @@ class RegisterUser(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Регистрация"
-        context["categories"] = Category.objects.all()
+        context["title"] = "Регистрация"
+        context["categories"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
         return context
 
     def form_valid(self, form):
@@ -97,8 +94,8 @@ class LoginUser(LoginView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Авторизация"
-        context["categories"] = Category.objects.all()
+        context["title"] = "Авторизация"
+        context["categories"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
         return context
 
     def get_success_url(self):
@@ -106,9 +103,36 @@ class LoginUser(LoginView):
 
 class UserProfile(TemplateView):
     template_name = 'app/profile.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.annotate(num_products=Count('product')).filter(num_products__gt=0)
+        context["title"] = "Профиль"
+        context["search_form"] = SearchForm()
+        context["method"] = "POST"
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+class EditProfile(FormView):
+    template_name = 'app/edit_profile.html'
+    form_class = UserProfileForm
+    success_url = reverse_lazy('user_profile')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["instance"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 def logout_user(request):
     logout(request)

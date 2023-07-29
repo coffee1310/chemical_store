@@ -10,16 +10,6 @@
 		    {{ form.username }}
   		</div>
   
-  	<div class="form-field">
-  		<div><img src="{% static 'app/images/password.png' %}"></div>
-    	{{ form.password1 }}
-  	</div>
-  
-	  <div class="form-field">
-	  	<div><img src="{% static 'app/images/password.png' %}"></div>
-	    {{ form.password2 }}
-	  </div>
-  
 	  <div class="form-field">
 	  	<div><img src="{% static 'app/images/adress.png' %}"></div>
 	    {{ form.user_adress }}
@@ -30,13 +20,10 @@
 	    {{ form.user_birth_date }}
 	  </div>
 	</div>
-
 	<div class="register">
-		<button type="submit" class="register">Зарегистрироваться</button>
+		<button type="submit" class="register">Сохранить</button>
 	</div>
-	<span class="no-acc"><a href="{% url 'login_user' %}">Уже есть аккаунта?</a></span>
 </form>
-
 <script src="{% static 'app/calendar/airdatepicker/air-datepicker.js' %}"></script>
 <script>
         new AirDatepicker('#birth-input', {

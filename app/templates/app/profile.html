@@ -1,0 +1,24 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+	<div class="profile-main">
+		<div class="profile-field">
+			<img src="{% static 'app/images/user_profile.png' %}">
+			<a href="{% url 'edit_profile' %}">Редактировать профиль</a>
+			
+		</div>
+		<div class="profile-field">
+			<img src="{% static 'app/images/about_acc.png' %}">
+			<a href="#">Об аккаунте</a>
+		</div>
+		<div class="profile-field">
+			<img src="{% static 'app/images/history.png' %}">
+			<a href="#">История покупок</a>
+		</div>
+		<div class="profile-field">
+			<img src="{% static 'app/images/logout.png' %}">
+			<a href="{% url 'logout' %}" style="color: red;">Выйти из аккаунта</a>
+		</div>
+	</div>
+{% endblock %}

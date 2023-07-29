@@ -23,3 +23,14 @@ class UserLoginForm(AuthenticationForm):
     username = forms.CharField(label="Никнейм", max_length=150,widget=forms.TextInput(attrs={"class": "username_input"}))
     password = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={"class": "password_input"}))
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'user_adress', 'user_birth_date']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = 'username_input'
+        self.fields['user_adress'].widget.attrs['class'] = 'adress_input'
+        self.fields['user_birth_date'].widget.attrs['class'] = 'birth_day_input'
+        self.fields['user_birth_date'].widget.attrs['id'] = 'birth-input'

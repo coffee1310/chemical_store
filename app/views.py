@@ -2,7 +2,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.db.models import Count
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView, ListView
@@ -150,6 +151,43 @@ class AboutAccount(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
 
+def add_to_cart(request, product_id):
+    user = request.user
+    product = Product.objects.get(pk=product_id)  # Получить объект продукта по его идентификатору
+
+    cart_item, created = Cart.objects.get_or_create(user=user, product=product)
+    cart_item.quantity += 1
+    cart_item.save()
+
+    cart_items_count = Cart.objects.filter(user=user).count()
+
+    response_data = {
+        'message': f'Продукт с ID {product_id} был успешно добавлен в корзину.',
+        'cart_items_count': cart_items_count,
+    }
+    return JsonResponse(response_data)
+
+def remove_from_cart(request, product_id):
+    user = request.user
+    cart_item, created = Cart.objects.get_or_create(user=user, product_id=product_id)
+    cart_item.quantity -= 1
+    cart_item.save()
+    cart_items_count = Cart.objects.filter(user=user).count()
+    response_data = {
+        'message': f'Продукт с ID {product_id} был успешно добавлен в корзину.',
+        'cart_items_count': cart_items_count,
+    }
+    print(response_data, cart_item.quantity)
+    return JsonResponse(response_data)
+
+def clear_cart(request):
+    user = request.user
+    cart = Cart.objects.filter(user=user)
+    cart.delete()
+    response_data = {
+        'message': 'Корзина успешно очищена.',
+    }
+    return JsonResponse(response_data)
 
 def logout_user(request):
     logout(request)

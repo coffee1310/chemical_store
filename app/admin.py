@@ -28,8 +28,14 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display_links = ("order","product")
     search_fields = ("order","product")
 
+class CartAdmin(admin.ModelAdmin):
+    list_display = ("id","user","product","quantity")
+    list_display_links = ("id","user","product","quantity")
+    search_fields = ("id","user","product","quantity")
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
+admin.site.register(Cart,CartAdmin)

@@ -20,7 +20,7 @@
 					
 					<button onclick="increaseValue('counter{{p.pk}}')">+</button>
 				</div>
-				<button class="add-to-cart">Купить</button>
+				<button class="add-to-cart" data-product-id="{{ p.id }}">Купить</button>
 			</div>
 		{% endif %}
 		{% endfor %}
@@ -29,6 +29,56 @@
 </div>
 {% endfor %}
 <script src="{% static 'app/js/main.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', addToCart);
+    });
+
+    function addToCart(event) {
+        const productId = event.target.dataset.productId;
+        const url = `/cart/add_ajax/${productId}/`;
+
+        // Получение CSRF-токена из cookie
+        const csrftoken = getCookie('csrftoken');
+
+        fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken // Передача CSRF-токена в заголовке
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+            // Обновите информацию о корзине без перезагрузки страницы, если требуется
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Функция для получения CSRF-токена из cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Имя cookie начинается с 'csrftoken='
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
 {% endblock %}
 
 

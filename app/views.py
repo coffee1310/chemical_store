@@ -134,6 +134,23 @@ class EditProfile(FormView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+class AboutAccount(TemplateView):
+    template_name = "app/about_user.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["username"] = self.request.user.username
+        context["created_at"] = self.request.user.created_at
+        context["user_adress"] = self.request.user.user_adress
+        context["user_birth_date"] = self.request.user.user_birth_date
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+
 def logout_user(request):
     logout(request)
     return redirect("index_page")

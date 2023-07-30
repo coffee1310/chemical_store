@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-main">
+	<div class="profile-field-info">
+		<div><img src="{% static 'app/images/user_profile.png' %}"></div>
+		   <span>Имя пользователя: {{ username }}</span>
+  		</div>
+
+  	<div class="profile-field-info">
+		<div><img src="{% static 'app/images/created_at.png' %}"></div>
+			<span>Аккаунт был создан: {{ created_at }}</span>
+  	</div>
+
+	<div class="profile-field-info">
+		<div><img src="{% static 'app/images/user_location.png' %}"></div>
+		<span>Адресс пользователя: {{ user_adress }}</span>
+	</div>
+  
+	<div class="profile-field-info">
+	 <div><img src="{% static 'app/images/user_birth_date.png' %}"></div>
+	   <span>Дата рождения пользователя: {{ user_birth_date }}</span>
+	</div>
+</div>
+{% endblock %}

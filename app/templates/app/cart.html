@@ -1,0 +1,29 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% block content %}
+
+{% if cart_items|length > 0 %}
+<div class="cart-items">
+	{% for cart_item in cart_items %}
+		<div class="cart-item">
+			<button class="remove-item" data-item-id="{{ cart_item.id }}" onclick="removeItem(event)">x</button>
+			<span class="item-img"><img src="{{cart_item.product.product_image.url}}"></span>
+			<span class="item-name">{{ cart_item.product.product_name|truncatechars:34 }}</span>
+			<button data-item-id="{{ cart_item.id }}" onclick="decreaseQuantity(event)" class="decrease-btn">-</button>
+			<span class="item-count" id="item-quantity-{{ cart_item.id }}">{{ cart_item.quantity }}</span>
+			<button data-item-id="{{ cart_item.id }}" onclick="increaseQuantity(event)">+</button>
+			<div class="price">
+				<span class="item-price">{{ cart_item.product.product_price|mul:cart_item.quantity }} <sub>руб</sub></span>
+				<span class="default-item-price" id="{{cart_item.pk}}">{{ cart_item.quantity }} * {{ cart_item.product.product_price }} руб</span>
+				<div></div>
+			</div>
+			<div class="bar"></div>
+		</div>
+	{% endfor %}
+{% endif %}
+</div>
+<script src="{% static 'app/js/main.js' %}">
+</script>
+{% endblock %}

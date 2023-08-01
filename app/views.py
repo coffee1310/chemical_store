@@ -150,35 +150,55 @@ class AboutAccount(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+class CartPage(TemplateView):
+    template_name = "app/cart.html"
 
-def add_to_cart(request, product_id):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user = self.request.user
+        context["cart_items"] = Cart.objects.filter(user=user)
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+def add_to_cart(request, product_id, item_quantity):
     user = request.user
-    product = Product.objects.get(pk=product_id)  # Получить объект продукта по его идентификатору
-
-    cart_item, created = Cart.objects.get_or_create(user=user, product=product)
-    cart_item.quantity += 1
+    product = Product.objects.get(pk=product_id)
+    cart_item_exists = Cart.objects.filter(user=user, product=product)
+    if cart_item_exists.exists():
+        cart_item = Cart.objects.get(user=user, product=product)
+    else:
+        cart_item = Cart.objects.create(user=user, product=product, quantity=0)
+    cart_item.quantity += item_quantity
     cart_item.save()
-
     cart_items_count = Cart.objects.filter(user=user).count()
 
     response_data = {
         'message': f'Продукт с ID {product_id} был успешно добавлен в корзину.',
         'cart_items_count': cart_items_count,
+        'cart_item_quantity':cart_item.quantity
     }
     return JsonResponse(response_data)
 
-def remove_from_cart(request, product_id):
+def remove_from_cart(request, item_id):
     user = request.user
-    cart_item, created = Cart.objects.get_or_create(user=user, product_id=product_id)
-    cart_item.quantity -= 1
-    cart_item.save()
-    cart_items_count = Cart.objects.filter(user=user).count()
-    response_data = {
-        'message': f'Продукт с ID {product_id} был успешно добавлен в корзину.',
-        'cart_items_count': cart_items_count,
-    }
-    print(response_data, cart_item.quantity)
-    return JsonResponse(response_data)
+    try:
+        cart_item = Cart.objects.get(user=user, id=item_id)
+        cart_item.delete()
+        cart_items_count = Cart.objects.filter(user=request.user).count()
+
+        response_data = {
+            'message': f'Продукт с ID {item_id} был успешно удален из корзины.',
+            'cart_items_count': cart_items_count,
+        }
+        return JsonResponse(response_data)
+    except Cart.DoesNotExist:
+        response_data = {
+            'error': f'Продукт с ID {item_id} не найден в корзине.',
+        }
+        return JsonResponse(response_data, status=400)
 
 def clear_cart(request):
     user = request.user
@@ -188,6 +208,17 @@ def clear_cart(request):
         'message': 'Корзина успешно очищена.',
     }
     return JsonResponse(response_data)
+
+
+
+def update_quantity(request, item_id, new_quantity):
+    try:
+        cart_item = Cart.objects.get(pk=item_id)
+        cart_item.quantity = new_quantity
+        cart_item.save()
+        return JsonResponse({'new_quantity': new_quantity})
+    except Cart.DoesNotExist:
+        return JsonResponse({'error': 'Cart item not found'}, status=404)
 
 def logout_user(request):
     logout(request)

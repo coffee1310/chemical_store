@@ -9,7 +9,9 @@ urlpatterns = [
     path('edit_profile/', EditProfile.as_view(), name="edit_profile"),
     path('about_user/', AboutAccount.as_view(), name='about_user'),
     path('category/<slug:cat_slug>/', CategoryProduct.as_view(), name="category_product"),
-    path('cart/add_ajax/<int:product_id>/', add_to_cart, name='add_to_cart_ajax'),
-    path('cart/remove_ajax/<int:product_id>/', remove_from_cart, name="remove_from_cart_ajax"),
-    path('cart/clear_cart', clear_cart, name="clear_cart")
+    path('cart/', CartPage.as_view(), name="user_cart"),
+    path('cart/add_ajax/<int:product_id>/<int:item_quantity>/', add_to_cart, name='add_to_cart_ajax'),
+    path('cart/remove_ajax/<int:item_id>/', remove_from_cart, name="remove_from_cart_ajax"),
+    path('cart/clear_cart', clear_cart, name="clear_cart"),
+    path('cart/update_quantity/<int:item_id>/<int:new_quantity>/', update_quantity, name='update_quantity'),
 ]

@@ -46,12 +46,12 @@ img{vertical-align: top;}
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
 /*--------------------*/
-html{
+html {
 	font-family: "itimcyrillic";
 }
 
 /*Menu*/
-.bg-nav{
+.bg-nav {
 	-webkit-box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
 	-moz-box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
 	box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
@@ -59,26 +59,26 @@ html{
 }
 
 
-.Logo-list{
+.Logo-list {
 	font-size: 250%;
 	display: flex;
 	justify-content: center;
 }
 
-.menu-name{
+.menu-name {
 	background-color: white;
 }
 
-.second-menu ul{
+.second-menu ul {
 	display: flex;
 	
 	height: 100px;
 }
-.second-menu ul img{
+.second-menu ul img {
 	width: 20%;
 }
 
-.search-input{
+.search-input {
 	background-color: #F1F1F1;
 	border: 1px solid #DCDCDC;
 	border-radius: 15px;
@@ -97,27 +97,27 @@ html{
 	box-shadow: 0px 8px 5px -6px rgba(34, 60, 80, 0.2);
 }
 
-.cart{
+.cart {
 	position: absolute;
 	left: 89%;
 	margin-left: 20px;
 }
 
-.cart img{
+.cart img {
 	min-width: 60px;
 }
 
-.profile{
+.profile {
 	position: absolute;
 	left: 84%;
 }
 
-.profile img{
+.profile img {
 	min-width: 60px;
 }
 
 
-.search-btn{
+.search-btn {
 	margin-top: 5px;
 	left: 58%;
 	width: 12%;
@@ -125,7 +125,7 @@ html{
 
 }
 
-.search-btn img{
+.search-btn img {
 	position: absolute;
 	background-color: #F1F1F1;
 	border-radius: 50%;
@@ -136,7 +136,7 @@ html{
 	box-shadow: 0px 2px 4px 1px rgba(34, 60, 80, 0.2);
 }
 
-.backside-menu-btn{
+.backside-menu-btn {
 	position: absolute;
 	left: 2%;
 	margin-top: 50px;
@@ -186,18 +186,18 @@ html{
 }
 /*Product-card*/
 
-.category{
+.category {
 	font-size: 200%;
 	margin-left: 20px;
 }
 
-.products{
+.products {
 	justify-content: center;
 	margin-top: 30px;
 	display: flex;
 }
 
-.product{
+.product {
 	margin-left: 20px;
   	display: flex;
   	flex-direction: column;
@@ -213,23 +213,23 @@ html{
 	box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
 }
 
-.product-img img{
+.product-img img {
 	width: 150px;
 }
 
-.product-img{
+.product-img {
 	display: flex;
 	justify-content: center;
 }
 
-.product-name{
+.product-name {
 	font-size: 150%;
 	margin-top: 10px;
 	display: flex;
 	justify-content: center;
 }
 
-.stroke{
+.stroke {
 	margin: 0 auto;
 	text-align: center;
 	width: 100px;
@@ -238,28 +238,28 @@ html{
 	background-color: black;
 }
 
-.product-price{
+.product-price {
 	display: flex;
 	justify-content: center;
 	font-size: 150%;
 	margin-top: 10px;
 }
 
-.count{
+.count {
 	margin-top: 10px;
 	font-size: 150%;
 	display: flex;
 	justify-content: center;
 }
 
-.count button{
+.count button {
 	font-weight: bold;
 	background-color: white;
 	margin-left: 10px;
 	margin-right: 10px;
 }
 
-.add-to-cart{
+.add-to-cart {
 	display: block;
   	margin: 0 auto;
 	background-color: #30D340;
@@ -271,7 +271,7 @@ html{
 }
 
 /*register-and-login-menu*/
-.register-form{
+.register-form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -281,15 +281,15 @@ html{
 	font-size: 150%;
 }
 
-.register-form label{
+.register-form label {
 	font-size: 120%;
 }
 
-.form-field{
+.form-field {
 	display: flex;
 }
 
-.form-field img{
+.form-field img {
 	width: 40px;
 	height: 40px;
 	margin-top: 10px;
@@ -301,7 +301,7 @@ html{
 	box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
 }
 
-.username_input, .password_input, .adress_input, .birth_day_input{
+.username_input, .password_input, .adress_input, .birth_day_input {
 	margin-top: 10px;
 	display: flex;
 	justify-content: center;
@@ -315,13 +315,13 @@ html{
 	box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
 }
 
-.register{
+.register {
 	display: flex;
 	justify-content: center;
 	align-items: center	;
 }
 
-.register button{
+.register button {
 	text-align: center;
 	background-color: #05F900;
 	color: white;
@@ -333,13 +333,13 @@ html{
 
 }
 
-.no-acc{
+.no-acc {
 	display: flex;
 	justify-content: center;
 	font-size: 20px;
 }
 
-.form-error{
+.form-error {
 	display: flex;
 	width: 20%;
 	color: red;
@@ -413,18 +413,102 @@ html{
 }
 
 .profile-field-info span {
-  font-size: 200%;
-  position: relative; 
-  color: black;
-  margin-left: 20px;
-  height: 60px;
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  padding: 10px;
-  width: 400px;
-  text-decoration: none;
-  -webkit-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
-  -moz-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
-  box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+	font-size: 200%;
+	position: relative; 
+	color: black;
+	margin-left: 20px;
+	height: 60px;
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	padding: 10px;
+	width: 400px;
+	text-decoration: none;
+	-webkit-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+	-moz-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+	box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+}
+
+/* cart-page */
+
+.cart-items {
+	display: flex;
+	margin: 100px auto;
+	flex-direction: column;
+	width: 600px;
+	border: 1px solid #DCDCDC;
+	-webkit-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+	-moz-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+	box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+}
+
+.cart-item {
+	display: flex;
+	align-items: center;
+}
+
+.remove-item {
+	float: left;
+	margin-left: 5%;
+	font-size: 250%;
+	margin-top: -55px;
+	color: #757575;
+}
+
+.item-img img {
+	width: 100px;
+}
+
+.item-name {
+	display: block;
+	font-size: 150%;
+	width: 200px;
+}
+
+.cart-item button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	padding-bottom: 5px;
+	font-size: 200%;
+	background-color: #D9D9D9;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+
+}
+
+.item-count {
+	font-size: 200%;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.price {
+	display: flex;
+	flex-direction: column;
+}
+
+.item-price {
+	display: block;
+	width: 100px;
+	font-size: 150%;
+	margin-left: 20px;
+}	
+
+.default-item-price {
+	color: #D9D9D9;
+	margin-left: 20px;
+}
+
+.bar {
+	position: absolute;
+	background-color: black;
+	align-content: center;
+	margin-top: 95px;
+	height: 1px;
+	width: 580px;
+	left: 50%;
+  	transform: translateX(-50%); 
 }

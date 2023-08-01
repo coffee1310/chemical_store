@@ -35,7 +35,7 @@
 			</li>
 			{% if request.user.is_authenticated %}
 				<li class="profile"><a href="{% url 'user_profile' %}"><img src="{% static 'app/images/profile.png' %}"></a></li>
-				<li class="cart"><img src="{% static 'app/images/cart.png' %}"></li>
+				<li class="cart"><a href="{% url 'user_cart' %}"><img src="{% static 'app/images/cart.png' %}"></a></li>
 			{% else %}
 				<li class="profile"><a href="{% url 'login_user' %}"><img src="{% static 'app/images/profile.png' %}"></a></li>
 				<li class="cart"><a href="{% url 'login_user' %}"><img src="{% static 'app/images/cart.png' %}"></a></li>

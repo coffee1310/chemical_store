@@ -38,7 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addToCart(event) {
         const productId = event.target.dataset.productId;
-        const url = `/cart/add_ajax/${productId}/`;
+        const quantity = document.getElementById(`counter${productId}`).textContent
+        console.log(quantity)
+        const url = `/cart/add_ajax/${productId}/${quantity}/`;
+        console.log(url)
 
         // Получение CSRF-токена из cookie
         const csrftoken = getCookie('csrftoken');
@@ -53,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data.message);
+            console.log(data.cart_item_quantity);
             // Обновите информацию о корзине без перезагрузки страницы, если требуется
         })
         .catch(error => {

@@ -15,10 +15,10 @@
 				<div class="stroke"></div>
 				<span class="product-price">{{p.product_price}}₽</span>
 				<div class="count">
-					<button onclick="reduceValue('counter{{p.pk}}')">-</button>
+					<button data-item-id="{{ p.pk }}" onclick="reduceValue('counter{{p.pk}}')">-</button>
 					<span id="counter{{p.pk}}">1</span>
 					
-					<button onclick="increaseValue('counter{{p.pk}}')">+</button>
+					<button data-item-id="{{ p.pk }}" onclick="increaseValue('counter{{p.pk}}')">+</button>
 				</div>
 				<button class="add-to-cart" data-product-id="{{ p.id }}">Купить</button>
 			</div>

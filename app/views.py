@@ -1,3 +1,4 @@
+from _decimal import Decimal
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
@@ -157,11 +158,23 @@ class CartPage(TemplateView):
         context = super().get_context_data()
         user = self.request.user
         context["cart_items"] = Cart.objects.filter(user=user)
+        context["total_amount"] = sum([cart_item.quantity * cart_item.product.product_price for cart_item in Cart.objects.filter(user=user)])
+
+
+
         return context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+class OrderHistory(ListView):
+    template_name = "app/order_history.html"
+    context_object_name = "order_history"
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(user=user)
 
 def add_to_cart(request, product_id, item_quantity):
     user = request.user
@@ -220,9 +233,22 @@ def update_quantity(request, item_id, new_quantity):
     except Cart.DoesNotExist:
         return JsonResponse({'error': 'Cart item not found'}, status=404)
 
+def buy_cart_items(request):
+    user = request.user
+    cart_items = Cart.objects.filter(user=user)
+    total_amount = Decimal(sum(item.quantity * item.product.product_price for item in cart_items))
+    order = Order.objects.create(user=user, total_amount=total_amount)
+    for cart_item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=cart_item.product,
+            quantity=cart_item.quantity,
+            price=cart_item.product.product_price
+        )
+    cart_items.delete()
+    return redirect("index_page")
+
 def logout_user(request):
     logout(request)
     return redirect("index_page")
 
-def order_history(request):
-    pass

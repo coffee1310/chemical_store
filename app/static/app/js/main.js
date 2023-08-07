@@ -20,18 +20,7 @@ function reduceValue(counterId) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Add event listener to the cart-items container
-  const cartItemsContainer = document.querySelector('.cart-items');
-  cartItemsContainer.addEventListener('click', function(event) {
-    // Check if the clicked element is a "-" button
-    if (event.target.tagName === 'BUTTON' && event.target.textContent === '-') {
-      decreaseQuantity(event);
-    } else if (event.target.tagName === 'BUTTON' && event.target.textContent === '+') {
-      increaseQuantity(event);
-    }
-  });
-});
+
 
 function updateQuantity(itemId, newQuantity) {
   // Send an AJAX request to update the quantity in the database
@@ -43,24 +32,31 @@ function updateQuantity(itemId, newQuantity) {
       quantitySpan.textContent = data.new_quantity;
     })
     .catch(error => console.error('Error:', error));
+  
 }
 
 function decreaseQuantity(event) {
-  const itemId = event.target.dataset.itemId;
-  const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
-  let quantity = parseInt(quantitySpan.textContent);
-  if (quantity > 1) {
-    quantity--;
-    updateQuantity(itemId, quantity);
+  // Проверяем, является ли элемент кнопкой "-"
+  if (event.target.textContent === '-') {
+    const itemId = event.target.dataset.itemId;
+    const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
+    let quantity = parseInt(quantitySpan.textContent);
+    if (quantity > 1) {
+      quantity--;
+      updateQuantity(itemId, quantity);
+    }
   }
 }
 
 function increaseQuantity(event) {
-  const itemId = event.target.dataset.itemId;
-  const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
-  let quantity = parseInt(quantitySpan.textContent);
-  quantity++;
-  updateQuantity(itemId, quantity);
+  // Проверяем, является ли элемент кнопкой "+"
+  if (event.target.textContent === '+') {
+    const itemId = event.target.dataset.itemId;
+    const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
+    let quantity = parseInt(quantitySpan.textContent);
+    quantity++;
+    updateQuantity(itemId, quantity);
+  }
 }
 
 function removeItem(event) {
@@ -103,7 +99,39 @@ function getCookie(name) {
   return cookieValue;
 } 
 
+function changeQuantity(event, diff, itemPrice) {
+  const itemId = event.target.dataset.itemId;
+  const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
+  let quantity = parseInt(quantitySpan.textContent);
 
+  quantity += diff;
+  if (quantity < 1) {
+    return; // Предотвращаем уменьшение количества до отрицательных значений
+  }
 
+  quantitySpan.textContent = quantity;
 
+  updateQuantity(itemId, quantity);
 
+  const priceSpan = document.getElementById(`item-price-${itemId}`);
+  let price = parseInt(itemPrice);
+  let totalPrice = price * quantity;
+  priceSpan.textContent = ''; 
+
+  const subElement = document.createElement('sub');
+  subElement.textContent = 'руб';
+
+  priceSpan.appendChild(subElement);
+
+  priceSpan.innerHTML = `${totalPrice} ${subElement.outerHTML}`;
+
+  const defItemPriceSpan = document.getElementById(`def-item-price-${itemId}`);
+  defItemPriceSpan.textContent = `${quantity} * ${price} руб`;
+  
+  const totalAmountSpan = document.getElementById('total-amount');
+  let totalAmount = totalAmountSpan.textContent;
+  if (diff === -1) {
+    totalAmount -= quantity * price;
+  }
+
+}

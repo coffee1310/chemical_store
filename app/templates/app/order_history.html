@@ -1,0 +1,33 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% block content %}
+<h1>История покупок</h1>
+  {% if order_history %}
+  	<div class="order-items">
+	      {% for order in order_history %}
+	          <span class="order-date">Дата заказа: {{ order.date_ordered }}</span>
+	          <div class="date-bar"></div>
+	          <div class="order-items-info">
+	            {% for order_item in order.orderitem_set.all %}
+	            <div class="order-item">
+	            	<span class="order-item-img"><img src="{{ order_item.product.product_image.url }}"></span>
+	                <span class="order-item-name">{{ order_item.product.product_name }}</span>
+	                <div class="price">
+		                <span class="order-item-quantity">{{ order_item.quantity }} штук</span>
+		                <span class="order-item-price">{{ order_item.product.product_price }} руб</span>
+	            	</div>
+	            </div>
+	            {% endfor %}
+	            <div class="orders-bar"></div>
+	           </div>
+
+	        <span class="total-amount">Итоговая сумма: {{ order.total_amount }} руб.</span>
+	      {% endfor %}
+
+   	</div>
+  {% else %}
+    <p>Вы еще не совершали покупок.</p>
+  {% endif %}
+{% endblock %}

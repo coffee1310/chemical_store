@@ -73,6 +73,9 @@ class Cart(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['date_added']
+
     @staticmethod
     def get_cart_length(user):
         return Cart.objects.filter(user=user).count()

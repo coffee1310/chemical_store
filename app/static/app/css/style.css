@@ -152,33 +152,33 @@ html {
 
 /*Menu-burger*/
 .menu-burger {
-  position: relative;
+position: relative;
 }
 
 .menu-burger input[type="checkbox"] {
-  display: none;
+	display: none;
 }
 
 .menu-burger label.backside-menu-btn {
-  display: block;
-  cursor: pointer;
+	display: block;
+	cursor: pointer;
 }
 
 .menu-burger ul {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  padding: 0;
-  margin: 0;
-  margin-top: 100px;
-  background-color: #ffffff;
-  box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
+	display: none;
+	position: absolute;
+	top: 120%;
+	left: 0;
+	padding: 0;
+	margin: 0;
+	margin-top: 100px;
+	background-color: #ffffff;
+	box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
 }
 
 .menu-burger ul li {
 	margin-top: 10px;
-  padding: 10px;
+  	padding: 10px;
 }
 
 .menu-burger input[type="checkbox"]:checked ~ ul {
@@ -195,18 +195,19 @@ html {
 	justify-content: center;
 	margin-top: 30px;
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .product {
 	margin-left: 20px;
+	margin-top: 20px;
   	display: flex;
   	flex-direction: column;
   	justify-content: center;
   	align-items: center;
   	text-align: center;
-	height: 320px;
+	height: 350px;
 	width: 200px;
-	
 	border-radius: 10px;
 	-webkit-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
 	-moz-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
@@ -214,7 +215,7 @@ html {
 }
 
 .product-img img {
-	width: 150px;
+	height: 150px;
 }
 
 .product-img {
@@ -227,6 +228,7 @@ html {
 	margin-top: 10px;
 	display: flex;
 	justify-content: center;
+
 }
 
 .stroke {
@@ -456,7 +458,7 @@ html {
 }
 
 .item-img img {
-	width: 100px;
+	height: 100px;
 }
 
 .item-name {

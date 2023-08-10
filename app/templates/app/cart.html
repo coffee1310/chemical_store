@@ -6,7 +6,7 @@
 
 {% if cart_items|length > 0 %}
 <div class="cart-items">
-	<button class="clear_cart">X</button>
+	<button class="clear_cart" onclick="clearCart()">X</button>
 {% for cart_item in cart_items %}
     <div class="cart-item">
         <button class="remove-item" data-item-id="{{ cart_item.id }}" onclick="removeItem(event)">x</button>

@@ -219,6 +219,7 @@ def clear_cart(request):
     cart.delete()
     response_data = {
         'message': 'Корзина успешно очищена.',
+        'js':'js'
     }
     return JsonResponse(response_data)
 

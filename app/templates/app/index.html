@@ -11,7 +11,7 @@
 		{% if p.cat == c %}
 			<div class="product">
 				<p class="product-img"><img src="{{p.product_image.url}}"></p>
-				<span class="product-name">{{p.product_name}}</span>
+				<span class="product-name">{{p.product_name | truncatechars:34}}</span>
 				<div class="stroke"></div>
 				<span class="product-price">{{p.product_price}}₽</span>
 				<div class="count">
@@ -20,7 +20,7 @@
 					
 					<button data-item-id="{{ p.pk }}" onclick="increaseValue('counter{{p.pk}}')">+</button>
 				</div>
-				<button class="add-to-cart" data-product-id="{{ p.id }}">Купить</button>
+				<button class="add-to-cart" data-product-id="{{ p.id }}">В корзину</button>
 			</div>
 		{% endif %}
 		{% endfor %}

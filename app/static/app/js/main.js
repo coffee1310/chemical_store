@@ -135,3 +135,23 @@ function changeQuantity(event, diff, itemPrice) {
   }
 
 }
+
+function clearCart() {
+  const clearCartUrl = '/cart/clear_cart';
+  const csrftoken = getCookie('csrftoken');
+
+  fetch(clearCartUrl, {
+    method: 'DELETE',
+    headers: {
+      'X-CSRFToken': csrftoken,
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.message);
+      // Обновите информацию о корзине или выполните другие действия после очистки
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}

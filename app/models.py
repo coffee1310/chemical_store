@@ -51,6 +51,8 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+        ordering = ['-id']
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -107,6 +107,25 @@ html {
 	min-width: 60px;
 }
 
+.cart a::before {
+	content: "";
+	position: absolute;
+	width: 60px;
+	height: 3px;
+	bottom: -3px;
+	border-radius: 3px;
+	left: 0;
+	background-color: #6563ff; 
+	transform: scaleX(0); 
+	transform-origin: bottom right;
+	transition: transform 0.3s;
+}
+
+.cart a:hover::before {
+	transform: scaleX(1);
+	transform-origin: bottom left;
+}
+
 .profile {
 	position: absolute;
 	left: 84%;
@@ -116,6 +135,25 @@ html {
 	min-width: 60px;
 }
 
+
+.profile a::before {
+	content: "";
+	position: absolute;
+	width: 60px;
+	height: 3px;
+	bottom: -3px;
+	border-radius: 3px;
+	left: 0;
+	background-color: #8ec7f5; 
+	transform: scaleX(0); 
+	transform-origin: bottom right;
+	transition: transform 0.3s;
+}
+
+.profile a:hover::before {
+	transform: scaleX(1);
+	transform-origin: bottom left;
+}
 
 .search-btn {
 	margin-top: 5px;
@@ -214,6 +252,11 @@ position: relative;
 	box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
 }
 
+.product:hover {
+	transition: 0.1s;
+	transform: scale(1.05);
+}
+
 .product-img img {
 	height: 150px;
 }
@@ -270,6 +313,11 @@ position: relative;
 	width: 150px;
 	border-radius: 5px;
 	margin-top: 10px;
+}
+
+.add-to-cart:hover {
+	transition: 0.1s;
+	transform: scale(1.05);
 }
 
 /*register-and-login-menu*/
@@ -357,13 +405,13 @@ position: relative;
 	margin-top: 200px;
 }
 
-.profile-field {
+.profile-field, .profile-field-red {
 	display: flex;
 	align-items: center;
 	margin-bottom: 10px;
 }
 
-.profile-field img {
+.profile-field img, .profile-field-red img {
 	width: 60px;
 	border: 1px solid #DCDCDC;
 	-webkit-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
@@ -372,7 +420,7 @@ position: relative;
 
 }
 
-.profile-field a {
+.profile-field a, .profile-field-red a {
   font-size: 200%;
   position: relative; 
   color: black;
@@ -387,6 +435,39 @@ position: relative;
   -webkit-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
   -moz-box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
   box-shadow: 0px 4px 4px 0px rgba(34, 60, 80, 0.2);
+}
+
+.profile-field a::before {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 3px;
+  bottom: 3px;
+  left: 5%;
+  border-radius: 5px;
+  background-color: #8fc8f7; /* Цвет подчеркивания */
+  transform: scaleX(0); /* Начальное состояние: нет подчеркивания */
+  transform-origin: center;
+  transition: transform 0.3s;
+}
+
+.profile-field-red a::before {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 3px;
+  bottom: 3px;
+  left: 5%;
+  border-radius: 5px;
+  background-color: #ff5100; /* Цвет подчеркивания */
+  transform: scaleX(0); /* Начальное состояние: нет подчеркивания */
+  transform-origin: center;
+  transition: transform 0.3s;
+}
+
+.profile-field a:hover::before, .profile-field-red a:hover::before {
+  transform: scaleX(1); /* Плавное появление подчеркивания при наведении */
+  transform-origin: bottom left;
 }
 
 /* about profile  */
@@ -455,6 +536,11 @@ position: relative;
 	font-size: 250%;
 	margin-top: -55px;
 	color: #757575;
+}
+
+.remove-item:hover {
+	transition: 0.2s;
+	background-color: red;
 }
 
 .item-img img {

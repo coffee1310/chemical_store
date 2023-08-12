@@ -3,22 +3,21 @@
 
 {% block content %}
 {% for c in category %}
-<p>Number of products in this category: {{ c.pk }}</p>
 <p class="category">{{c.cat}}</p>
 <div class="products">
 
 		{% for p in products %}
 		{% if p.cat == c %}
 			<div class="product">
-				<p class="product-img"><img src="{{p.product_image.url}}"></p>
-				<span class="product-name">{{p.product_name | truncatechars:34}}</span>
+				<p class="product-img"><a href="{{ p.get_absolute_url }}"><img src="{{ p.product_image.url }}"></p>
+				<span class="product-name"><a href="{{ p.get_absolute_url }}" style="color: black;">{{p.product_name | truncatechars:34}}</a></span>
 				<div class="stroke"></div>
 				<span class="product-price">{{p.product_price}}₽</span>
 				<div class="count">
-					<button data-item-id="{{ p.pk }}" onclick="reduceValue('counter{{p.pk}}')">-</button>
+					<button data-item-id="{{ p.pk }}" onclick="reduceValue('counter{{ p.pk }}')">-</button>
 					<span id="counter{{p.pk}}">1</span>
 					
-					<button data-item-id="{{ p.pk }}" onclick="increaseValue('counter{{p.pk}}')">+</button>
+					<button data-item-id="{{ p.pk }}" onclick="increaseValue('counter{{ p.pk }}')">+</button>
 				</div>
 				<button class="add-to-cart" data-product-id="{{ p.id }}">В корзину</button>
 			</div>

@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="product-info">
+	<span class="product-name-info">{{ product.product_name }}</span>
+	<span class="product-img-info"><img src="{{ product.product_image.url }}"></span>
+	<span class="product-description-info">{{ product.product_description|linebreaks }}</span>
+</div>
+<div class="product-characteristics-info">
+	<span>{{ product.product_physico_chemical_characteristics|linebreaks }}</span>
+</div>
+
+{% endblock %}

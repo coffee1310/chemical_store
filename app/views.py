@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DetailView
 
 from .forms import SearchForm, UserRegisterForm, UserLoginForm, UserProfileForm
 from .models import *
@@ -64,6 +64,22 @@ class CategoryProduct(ListView):
             search_results = Product.objects.filter(product_name__icontains=query)
             context["products"] = search_results
         return context
+
+class ProductPage(DetailView):
+    template_name = 'app/product_page.html'
+    model = Product
+    context_object_name = 'product'
+    slug_url_kwarg = 'product_slug'
+    slug_field = 'product_slug'
+
+    def get_queryset(self):
+        product_slug = self.kwargs["product_slug"]
+        return Product.objects.filter(product_slug=product_slug)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        return context
+
 
 class RegisterUser(FormView):
     template_name = 'app/register.html'

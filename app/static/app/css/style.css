@@ -271,7 +271,11 @@ position: relative;
 	margin-top: 10px;
 	display: flex;
 	justify-content: center;
+	color: black;
+}
 
+.product-name a {
+	color: black;
 }
 
 .stroke {
@@ -712,4 +716,43 @@ position: relative;
 
 .price {
 	display: flex;
+}
+
+/* Product-page  */
+
+.product-info {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: left;
+	margin-left: 50px;
+	margin-top: 10px;
+}
+
+.product-name-info {
+	font-size: 200%;
+	width: 200px;
+}
+
+.product-img-info img {
+	display: flex;
+	margin-top: 10px;
+	height: 250px;
+}
+
+.product-characteristics-info span {
+	font-size: 200%;
+	margin-left: 100px;
+	display: block;
+	position: absolute;
+	left: 250px;
+	top: 160px;
+}
+
+
+.product-description-info {
+	width: 1000px;
+	font-size: 150%;
+	text-align: left;
+
 }

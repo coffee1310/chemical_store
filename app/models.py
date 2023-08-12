@@ -29,7 +29,7 @@ class Product(models.Model):
     cat = models.ForeignKey('Category',on_delete=models.DO_NOTHING)
 
     def get_absolute_url(self):
-        return reverse('product', kwargs={'product_slug': self.product_slug})
+        return reverse('product_page', kwargs={'product_slug': self.product_slug})
 
     def __str__(self):
         return self.product_name

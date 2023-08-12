@@ -137,7 +137,7 @@ function changeQuantity(event, diff, itemPrice) {
 }
 
 function clearCart() {
-  const clearCartUrl = '/cart/clear_cart';
+  const clearCartUrl = '/cart/clear_cart/';
   const csrftoken = getCookie('csrftoken');
 
   fetch(clearCartUrl, {

@@ -8,6 +8,11 @@
 		<div class="form-field">
 			<div><img src="{% static 'app/images/user_name.png' %}"></div>
 		    {{ form.username }}
+
+            {% if user_exists_message %}
+                <p class="user-exists">{{ user_exists_message }}</p>
+            {% endif %}
+
   		</div>
   
   	<div class="form-field">

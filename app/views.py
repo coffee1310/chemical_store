@@ -2,22 +2,21 @@ from _decimal import Decimal
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.core.checks import messages
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView, ListView, DetailView
-
 from .forms import SearchForm, UserRegisterForm, UserLoginForm, UserProfileForm
 from .models import *
-
 
 # Create your views here.
 
 class HomePage(TemplateView):
     template_name = "app/index.html"
-    model = Product
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["products"] = Product.objects.all()
@@ -41,15 +40,14 @@ class HomePage(TemplateView):
             context["title"] = "Reactive Mart"
             context["method"] = "POST"
             return self.render_to_response(context)
+
         return render(request, self.template_name, self.get_context_data(form=form))
 
 class CategoryProduct(ListView):
-    model = Product
     context_object_name = "products"
     template_name = "app/index.html"
     def get_queryset(self):
         cat_slug = self.kwargs["cat_slug"]
-        print(Product.objects.filter(cat__cat_slug=cat_slug))
         return Product.objects.filter(cat__cat_slug=cat_slug)
 
     def get_context_data(self, **kwargs):
@@ -97,10 +95,15 @@ class RegisterUser(FormView):
         password1 = form.cleaned_data['password1']
         user_adress = form.cleaned_data['user_adress']
         user_birth_date = form.cleaned_data['user_birth_date']
-        user = User(username=username, user_adress=user_adress, user_birth_date=user_birth_date)
-        user.set_password(password1)
-        user.save()
-        return super().form_valid(form)
+
+        if not User.objects.filter(username=username).exists():
+            user = User(username=username, user_adress=user_adress, user_birth_date=user_birth_date)
+            user.set_password(password1)
+            user.save()
+        else:
+            user_exists_message = 'Пользователь с таким именем уже существует.'
+
+        return self.render_to_response(self.get_context_data(user_exists_message=user_exists_message, form=form))
 
     def form_invalid(self, form):
         return redirect("register_user")

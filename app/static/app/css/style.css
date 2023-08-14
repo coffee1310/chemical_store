@@ -49,16 +49,6 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 html {
 	font-family: "itimcyrillic";
 }
-
-header {
-	position: fixed;
-	width: 100%;
-	z-index: 100;
-	margin-top: -100px;
-}
-
-
-
 /*Menu*/
 .bg-nav {
 	-webkit-box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
@@ -67,9 +57,6 @@ header {
 	background-color: white;
 }
 
-.content {
-	margin-top: 100px;
-}
 
 .Logo-list {
 	font-size: 250%;
@@ -83,6 +70,7 @@ header {
 
 .second-menu ul {
 	display: flex;
+	
 	height: 100px;
 }
 .second-menu ul img {
@@ -97,7 +85,7 @@ header {
 	position: absolute;
 	left: 27%;
 	width: 30%;
-	height: 35px;
+	height: 4%;
 	margin-top: 20px;
 	max-width: 1000px;
 	max-height: 40px;

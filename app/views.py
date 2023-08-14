@@ -44,8 +44,9 @@ class HomePage(TemplateView):
         return render(request, self.template_name, self.get_context_data(form=form))
 
 class CategoryProduct(ListView):
-    context_object_name = "products"
     template_name = "app/index.html"
+    context_object_name = "products"
+
     def get_queryset(self):
         cat_slug = self.kwargs["cat_slug"]
         return Product.objects.filter(cat__cat_slug=cat_slug)
@@ -58,14 +59,16 @@ class CategoryProduct(ListView):
         context["search_form"] = SearchForm()
         context["method"] = "GET"
         query = self.request.GET.get('query')
+
         if query:
             search_results = Product.objects.filter(product_name__icontains=query)
             context["products"] = search_results
+
         return context
 
 class ProductPage(DetailView):
-    template_name = 'app/product_page.html'
     model = Product
+    template_name = 'app/product_page.html'
     context_object_name = 'product'
     slug_url_kwarg = 'product_slug'
     slug_field = 'product_slug'
@@ -111,7 +114,6 @@ class RegisterUser(FormView):
 class LoginUser(LoginView):
     template_name = "app/login.html"
     form_class = UserLoginForm
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -178,9 +180,6 @@ class CartPage(TemplateView):
         user = self.request.user
         context["cart_items"] = Cart.objects.filter(user=user)
         context["total_amount"] = sum([cart_item.quantity * cart_item.product.product_price for cart_item in Cart.objects.filter(user=user)])
-
-
-
         return context
 
     @method_decorator(login_required)
@@ -199,10 +198,12 @@ def add_to_cart(request, product_id, item_quantity):
     user = request.user
     product = Product.objects.get(pk=product_id)
     cart_item_exists = Cart.objects.filter(user=user, product=product)
+
     if cart_item_exists.exists():
         cart_item = Cart.objects.get(user=user, product=product)
     else:
         cart_item = Cart.objects.create(user=user, product=product, quantity=0)
+
     cart_item.quantity += item_quantity
     cart_item.save()
     cart_items_count = Cart.objects.filter(user=user).count()
@@ -216,6 +217,7 @@ def add_to_cart(request, product_id, item_quantity):
 
 def remove_from_cart(request, item_id):
     user = request.user
+
     try:
         cart_item = Cart.objects.get(user=user, id=item_id)
         cart_item.delete()
@@ -226,6 +228,7 @@ def remove_from_cart(request, item_id):
             'cart_items_count': cart_items_count,
         }
         return JsonResponse(response_data)
+
     except Cart.DoesNotExist:
         response_data = {
             'error': f'Продукт с ID {item_id} не найден в корзине.',
@@ -234,11 +237,12 @@ def remove_from_cart(request, item_id):
 
 def clear_cart(request):
     user = request.user
+
     cart = Cart.objects.filter(user=user)
     cart.delete()
+
     response_data = {
         'message': 'Корзина успешно очищена.',
-        'js':'js'
     }
     return JsonResponse(response_data)
 
@@ -258,6 +262,7 @@ def buy_cart_items(request):
     cart_items = Cart.objects.filter(user=user)
     total_amount = Decimal(sum(item.quantity * item.product.product_price for item in cart_items))
     order = Order.objects.create(user=user, total_amount=total_amount)
+
     for cart_item in cart_items:
         OrderItem.objects.create(
             order=order,
@@ -265,6 +270,7 @@ def buy_cart_items(request):
             quantity=cart_item.quantity,
             price=cart_item.product.product_price
         )
+
     cart_items.delete()
     return redirect("index_page")
 

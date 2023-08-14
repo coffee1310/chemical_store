@@ -20,14 +20,10 @@ function reduceValue(counterId) {
   }
 }
 
-
-
 function updateQuantity(itemId, newQuantity) {
-  // Send an AJAX request to update the quantity in the database
   fetch(`/cart/update_quantity/${itemId}/${newQuantity}/`)
     .then(response => response.json())
     .then(data => {
-      // Update the quantity displayed on the page
       const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
       quantitySpan.textContent = data.new_quantity;
     })
@@ -36,7 +32,6 @@ function updateQuantity(itemId, newQuantity) {
 }
 
 function decreaseQuantity(event) {
-  // Проверяем, является ли элемент кнопкой "-"
   if (event.target.textContent === '-') {
     const itemId = event.target.dataset.itemId;
     const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
@@ -49,7 +44,6 @@ function decreaseQuantity(event) {
 }
 
 function increaseQuantity(event) {
-  // Проверяем, является ли элемент кнопкой "+"
   if (event.target.textContent === '+') {
     const itemId = event.target.dataset.itemId;
     const quantitySpan = document.getElementById(`item-quantity-${itemId}`);
@@ -64,7 +58,6 @@ function removeItem(event) {
   console.log(event.target.dataset.itemId);
   const url = `/cart/remove_ajax/${itemId}/`;
 
-  // Get the CSRF token from the page's cookies
   const csrftoken = getCookie('csrftoken');
 
   fetch(url, {
@@ -75,8 +68,7 @@ function removeItem(event) {
   })
   .then(response => {
       if (response.ok) {
-          // Reload the page or update the cart content dynamically
-          location.reload(); // or update cart content using JavaScript
+          location.reload();
       } else {
           console.error('Error:', response.status);
       }
@@ -106,7 +98,7 @@ function changeQuantity(event, diff, itemPrice) {
 
   quantity += diff;
   if (quantity < 1) {
-    return; // Предотвращаем уменьшение количества до отрицательных значений
+    return;
   }
 
   quantitySpan.textContent = quantity;
@@ -128,12 +120,26 @@ function changeQuantity(event, diff, itemPrice) {
   const defItemPriceSpan = document.getElementById(`def-item-price-${itemId}`);
   defItemPriceSpan.textContent = `${quantity} * ${price} руб`;
   
-  const totalAmountSpan = document.getElementById('total-amount');
-  let totalAmount = totalAmountSpan.textContent;
-  if (diff === -1) {
-    totalAmount -= quantity * price;
+  const totalAmountElement = document.getElementById('total-amount');
+  const itemPriceElements = document.querySelectorAll('.item-price');
+
+
+  let totalAmount = parseInt("{{ total_amount }}");
+
+  function updateTotalAmount() {
+    let newTotalAmount = 0;
+
+
+    itemPriceElements.forEach(element => {
+      newTotalAmount += parseFloat(element.textContent.replace(' руб', ''));
+    });
+
+    totalAmountElement.textContent = `Итоговая сумма: ${newTotalAmount} руб`;
+
+    totalAmount = newTotalAmount;
   }
 
+  updateTotalAmount();
 }
 
 function clearCart() {
@@ -149,9 +155,10 @@ function clearCart() {
     .then(response => response.json())
     .then(data => {
       console.log(data.message);
-      // Обновите информацию о корзине или выполните другие действия после очистки
+      window.location.reload();
     })
     .catch(error => {
       console.error('Error:', error);
     });
+
 }

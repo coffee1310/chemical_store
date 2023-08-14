@@ -5,44 +5,39 @@
 {% for c in category %}
 <p class="category">{{c.cat}}</p>
 <div class="products">
-
-		{% for p in products %}
-		{% if p.cat == c %}
-			<div class="product">
-				<p class="product-img"><a href="{{ p.get_absolute_url }}"><img src="{{ p.product_image.url }}"></p>
-				<span class="product-name"><a href="{{ p.get_absolute_url }}" style="color: black;">{{p.product_name | truncatechars:34}}</a></span>
-				<div class="stroke"></div>
-				<span class="product-price">{{p.product_price}}₽</span>
-				<div class="count">
-					<button data-item-id="{{ p.pk }}" onclick="reduceValue('counter{{ p.pk }}')">-</button>
-					<span id="counter{{p.pk}}">1</span>
-					
-					<button data-item-id="{{ p.pk }}" onclick="increaseValue('counter{{ p.pk }}')">+</button>
-				</div>
-				<button class="add-to-cart" data-product-id="{{ p.id }}">В корзину</button>
+	{% for p in products %}
+	{% if p.cat == c %}
+		<div class="product">
+			<p class="product-img"><a href="{{ p.get_absolute_url }}"><img src="{{ p.product_image.url }}"></p>
+			<span class="product-name"><a href="{{ p.get_absolute_url }}" style="color: black;">{{p.product_name | truncatechars:34}}</a></span>
+			<div class="stroke"></div>
+			<span class="product-price">{{p.product_price}}₽</span>
+			<div class="count">
+				<button data-item-id="{{ p.pk }}" onclick="reduceValue('counter{{ p.pk }}')">-</button>
+				<span id="counter{{p.pk}}">1</span>
+				
+				<button data-item-id="{{ p.pk }}" onclick="increaseValue('counter{{ p.pk }}')">+</button>
 			</div>
-		{% endif %}
-		{% endfor %}
-
-
+			<button class="add-to-cart" data-product-id="{{ p.id }}">В корзину</button>
+		</div>
+	{% endif %}
+	{% endfor %}
 </div>
 {% endfor %}
 <script src="{% static 'app/js/main.js' %}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    
     addToCartButtons.forEach(button => {
         button.addEventListener('click', addToCart);
     });
 
     function addToCart(event) {
         const productId = event.target.dataset.productId;
-        const quantity = document.getElementById(`counter${productId}`).textContent
-        console.log(quantity)
+        const quantity = document.getElementById(`counter${productId}`).textContent;
         const url = `/cart/add_ajax/${productId}/${quantity}/`;
-        console.log(url)
 
-        // Получение CSRF-токена из cookie
         const csrftoken = getCookie('csrftoken');
 
         fetch(url, {
@@ -50,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken // Передача CSRF-токена в заголовке
+                'X-CSRFToken': csrftoken
             }
         })
         .then(response => response.json())
@@ -61,16 +56,44 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error:', error);
         });
+
+        const productElement = event.target.closest('.product');
+        const productImage = productElement.querySelector('img');
+
+        const flyingProduct = document.createElement('div');
+        flyingProduct.classList.add('flying-cart-animation');
+        flyingProduct.style.backgroundImage = `url(${productImage.src})`;
+
+        document.body.appendChild(flyingProduct);
+
+        const cartButton = document.querySelector('.cart');
+        const cartButtonRect = cartButton.getBoundingClientRect();
+        const cartButtonX = cartButtonRect.left + cartButtonRect.width / 2;
+        const cartButtonY = cartButtonRect.top + cartButtonRect.height / 2;
+
+        const productRect = productElement.getBoundingClientRect();
+        const productX = productRect.left + productRect.width / 2;
+        const productY = productRect.top + productRect.height / 2;
+
+        flyingProduct.style.left = productX + 'px';
+        flyingProduct.style.top = productY + 'px';
+
+        flyingProduct.style.setProperty('--start-x', productX + 'px');
+        flyingProduct.style.setProperty('--start-y', productY + 'px');
+        flyingProduct.style.setProperty('--cart-x', cartButtonX + 'px');
+        flyingProduct.style.setProperty('--cart-y', cartButtonY + 'px');
+
+        flyingProduct.addEventListener('animationend', () => {
+            flyingProduct.remove();
+        });
     }
 
-    // Функция для получения CSRF-токена из cookie
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
             const cookies = document.cookie.split(';');
             for (let i = 0; i < cookies.length; i++) {
                 const cookie = cookies[i].trim();
-                // Имя cookie начинается с 'csrftoken='
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;

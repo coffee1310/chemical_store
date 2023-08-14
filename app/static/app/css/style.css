@@ -50,6 +50,15 @@ html {
 	font-family: "itimcyrillic";
 }
 
+header {
+	position: fixed;
+	width: 100%;
+	z-index: 100;
+	margin-top: -100px;
+}
+
+
+
 /*Menu*/
 .bg-nav {
 	-webkit-box-shadow: 0px 5px 10px 0px rgba(34, 60, 80, 0.2);
@@ -58,6 +67,9 @@ html {
 	background-color: white;
 }
 
+.content {
+	margin-top: 100px;
+}
 
 .Logo-list {
 	font-size: 250%;
@@ -71,7 +83,6 @@ html {
 
 .second-menu ul {
 	display: flex;
-	
 	height: 100px;
 }
 .second-menu ul img {
@@ -86,7 +97,7 @@ html {
 	position: absolute;
 	left: 27%;
 	width: 30%;
-	height: 4%;
+	height: 35px;
 	margin-top: 20px;
 	max-width: 1000px;
 	max-height: 40px;
@@ -190,7 +201,7 @@ html {
 
 /*Menu-burger*/
 .menu-burger {
-position: relative;
+	position: relative;
 }
 
 .menu-burger input[type="checkbox"] {
@@ -223,6 +234,28 @@ position: relative;
   display: block;
 }
 /*Product-card*/
+
+.flying-cart-animation {
+    position: fixed;
+    width: 50px; /* Укажите ширину и высоту изображения */
+    height: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 9999;
+    transition: transform 0.6s cubic-bezier(.75,-0.5,.25,1.5);
+    animation: flyToCart 1s ease-out;
+}
+
+@keyframes flyToCart {
+    from {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    to {
+        transform: translate(calc(var(--cart-x) - var(--start-x)), calc(var(--cart-y) - var(--start-y)));
+        opacity: 0;
+    }
+}
 
 .category {
 	font-size: 200%;

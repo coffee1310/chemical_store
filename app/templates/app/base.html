@@ -13,7 +13,7 @@
 	  <label for="menu-toggle" class="backside-menu-btn"><img src="{% static 'app/images/backside_menu.png' %}"></label>
 	  <ul>
 	    {% for c in categories %}
-	    <li><a href="{{ c.get_absolute_url }}">{{ c.cat }}</a></li>
+	    	<li><a href="{{ c.get_absolute_url }}">{{ c.cat }}</a></li>
 	    {% endfor %}
 	  </ul>
 	</nav>
@@ -45,9 +45,12 @@
 
 		</ul>
 	</nav>
+
 </div>
 </header>
 <body>
-	{% block content %}
-	{% endblock %}
+	<div class="content">
+		{% block content %}
+		{% endblock %}
+	</div>
 </body>

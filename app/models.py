@@ -25,7 +25,7 @@ class Product(models.Model):
     product_price = models.DecimalField(decimal_places=0, max_digits=10,  verbose_name="Цена", default=0)
     product_image = models.ImageField(upload_to="Img/",verbose_name="Изображение продукта")
     product_slug = models.SlugField(max_length=255, unique=True,db_index=True,verbose_name="URL")
-    product_physico_chemical_characteristics = models.TextField(verbose_name="Физико-химические свойства", blank=True)
+    product_physico_chemical_characteristics = models.TextField(verbose_name="Характеристики", blank=True)
     cat = models.ForeignKey('Category',on_delete=models.DO_NOTHING)
 
     def get_absolute_url(self):
@@ -77,10 +77,6 @@ class Cart(models.Model):
 
     class Meta:
         ordering = ['date_added']
-
-    @staticmethod
-    def get_cart_length(user):
-        return Cart.objects.filter(user=user).count()
 
     class Meta:
         unique_together = ['user', 'product']
